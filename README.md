@@ -1,28 +1,45 @@
-Overview
-This project implements a secure chat client that allows users to register and log in, encrypting their credentials and messages. The client communicates securely with the server using Diffie-Hellman key exchange for generating a shared secret and AES-128 encryption for protecting sensitive data.
+# **Secure Chat Client**
 
-Features
-User Registration: Users can register with an email, a unique username, and a password. The credentials are encrypted and sent to the server.
-User Login: Users can log in by providing their username and password, which are encrypted and sent securely.
-Encryption: All sensitive data (email, username, password) is encrypted using AES-128 in CBC mode. Diffie-Hellman key exchange is used to generate a shared secret for secure communication.
-Prerequisites
-C++: Make sure you have a C++ compiler installed (G++ or Clang).
-OpenSSL: This code uses the OpenSSL library for cryptographic functions like AES encryption and Diffie-Hellman key exchange. Ensure OpenSSL is installed on your system.
-Install OpenSSL
-On Ubuntu:
+## **Overview**
 
-bash
-Copy code
-sudo apt-get install libssl-dev
-On macOS (using Homebrew):
+The Secure Chat Client is a C++ application designed for secure communication between a client and server. It allows users to register and log in using encrypted credentials, ensuring the confidentiality and integrity of sensitive information. The system leverages **Diffie-Hellman key exchange** for secure key generation and **AES-128 encryption** for encrypting user data and messages.
+
+This client is built with robust security measures such as password hashing, salting, and symmetric key encryption, and it's designed to interact with a corresponding server that handles user authentication and encrypted communication.
+
+## **Key Features**
+
+- **User Registration**: Securely register new users by providing a unique email, username, and password.
+- **User Login**: Authenticate users by verifying encrypted credentials.
+- **Encrypted Communication**: Secure exchange of user credentials and chat messages using AES-128 encryption and keys derived from the Diffie-Hellman key exchange.
+- **Password Security**: User passwords are hashed using SHA-256 and salted, ensuring they are never stored in plaintext.
+- **Credential Storage**: Encrypted user credentials are securely stored on the server side.
+
+## **Technical Details**
+
+### **Encryption and Security**
+- **AES-128 (CBC Mode)**: Used to encrypt user credentials (email, username, password) and chat messages.
+- **Diffie-Hellman Key Exchange**: A secure method for exchanging cryptographic keys over an insecure channel.
+- **SHA-256 with Salt**: Used for hashing passwords before they are stored on the server. A unique salt is generated for each user to ensure password hash uniqueness.
+- **OpenSSL**: Utilized for all cryptographic operations including AES encryption, Diffie-Hellman key exchange, and hashing.
+
+## **System Requirements**
+
+- **C++ Compiler**: GCC or Clang supporting C++11 or higher.
+- **OpenSSL Library**: Ensure OpenSSL is installed on your system to provide cryptographic functionality.
+
+### **OpenSSL Installation**
+- **Ubuntu/Debian**:
+  ```bash
+  sudo apt-get install libssl-dev
+macOS (via Homebrew):
 
 bash
 Copy code
 brew install openssl
-How to Compile and Run
-Clone the Repository:
+Windows: Install OpenSSL for Windows.
 
-Clone the repository or copy the source files to your local machine.
+Installation Instructions
+Clone the Repository:
 
 bash
 Copy code
@@ -30,41 +47,28 @@ git clone https://github.com/your-username/secure-chat-client.git
 cd secure-chat-client
 Compile the Code:
 
-Compile the C++ code using g++ or any C++ compiler that supports linking OpenSSL.
-
-bash
+```bash
 Copy code
 g++ -o chat_client chat_client.cpp -lssl -lcrypto
 Run the Client:
+```
 
-After compilation, run the program:
-
-bash
+```bash
 Copy code
 ./chat_client
-Server Setup:
+Server Setup: Ensure the server is running on 127.0.0.1:8004 to accept client connections.
+```
 
-Make sure the server is running and listening on the correct port (8004 in this example). This client connects to 127.0.0.1:8004 by default.
-
-Usage
-Register a New User
-When prompted, enter your email address, a unique username, and a password.
-The credentials will be encrypted and sent to the server for registration.
-If the username is already taken, you will be prompted to try again.
-Login
-After registration, log in by providing your username and password.
-The credentials are encrypted using AES-128 and sent to the server for verification.
-Encryption Details
-AES-128 Encryption: The Advanced Encryption Standard (AES) in 128-bit CBC mode is used to encrypt user data. A pre-shared key or a key derived from Diffie-Hellman is used for the encryption.
-Diffie-Hellman Key Exchange: This algorithm is used to securely exchange a shared secret between the client and the server, ensuring that all communication is encrypted.
-SHA-256 Hashing: Passwords are hashed using SHA-256 on the server side, combined with a unique salt for each user to ensure security.
+Usage Instructions
+1. Registering a New User
+On startup, the client presents a menu. Select the option to register a new user.
+Input your email, a unique username, and a secure password. The data will be encrypted and sent to the server for registration.
+If the username is already taken, you'll be prompted to enter a new one.
+2. Logging In
+To log in, select the login option and provide your username and password.
+The credentials will be encrypted using the shared key from the Diffie-Hellman exchange and securely sent to the server for verification.
+3. Encrypted Communication
+Once logged in, users can exchange messages securely. Every message is encrypted using AES-128.
 File Structure
-chat_client.cpp: The main client-side code that handles user registration, login, and encrypted communication with the server.
-Security Measures
-Confidentiality: All sensitive user information (email, username, password) is encrypted before transmission.
-Password Hashing: Passwords are hashed on the server using SHA-256, preventing storage of plaintext passwords.
-Salting: Unique salts are used for each user during hashing to mitigate rainbow table attacks.
-Limitations and Future Improvements
-Error Handling: The current error handling is minimal. Future versions should include more detailed error messages and handling for network issues.
-Server-Side Code: This client is designed to work with a corresponding server. Ensure the server implements proper decryption and handling of encrypted messages.
-Additional Features: Future versions could include support for message encryption between users, improved UI, and better validation.
+chat_client.cpp: Main client-side code that implements user registration, login, Diffie-Hellman key exchange, and AES-128 encryption.
+creds.txt (server-side): Stores encrypted user credentials (email, username, hashed password, and salt).
